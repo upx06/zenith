@@ -15,7 +15,8 @@ defmodule Zenith.Application do
       # Start a worker by calling: Zenith.Worker.start_link(arg)
       # {Zenith.Worker, arg},
       # Start to serve requests, typically the last entry
-      ZenithWeb.Endpoint
+      ZenithWeb.Endpoint,
+      {AshAuthentication.Supervisor, [otp_app: :zenith]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

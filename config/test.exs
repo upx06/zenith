@@ -1,4 +1,6 @@
 import Config
+config :zenith, token_signing_secret: "hP3BpbMrs8cikebuTKy03aWxHtUivK6f"
+config :bcrypt_elixir, log_rounds: 1
 config :ash, policies: [show_policy_breakdowns?: true], disable_async?: true
 
 # Configure your database

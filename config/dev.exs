@@ -65,7 +65,7 @@ config :zenith, ZenithWeb.Endpoint,
   ]
 
 # Enable dev routes for dashboard and mailbox
-config :zenith, dev_routes: true
+config :zenith, dev_routes: true, token_signing_secret: "xsr/XVG1kacVgDbl5u3lp+SJwIl9HU41"
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"
