@@ -16,7 +16,9 @@ defmodule Zenith.Application do
       # {Zenith.Worker, arg},
       # Start to serve requests, typically the last entry
       ZenithWeb.Endpoint,
-      {AshAuthentication.Supervisor, [otp_app: :zenith]}
+      {AshAuthentication.Supervisor, [otp_app: :zenith]},
+      {Absinthe.Subscription, ZenithWeb.Endpoint},
+      AshGraphql.Subscription.Batcher
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
