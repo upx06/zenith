@@ -1,4 +1,5 @@
-defmodule Zenith.Accounts do
+
+defmodule Zenith.School do
   use Ash.Domain,
     otp_app: :zenith,
     extensions: [AshGraphql.Domain]
@@ -9,7 +10,5 @@ defmodule Zenith.Accounts do
   end
 
   resources do
-    resource Zenith.Accounts.Token
-    resource Zenith.Accounts.User
   end
 end

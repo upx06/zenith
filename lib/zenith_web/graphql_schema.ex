@@ -2,7 +2,7 @@ defmodule ZenithWeb.GraphqlSchema do
   use Absinthe.Schema
 
   use AshGraphql,
-    domains: [Zenith.Accounts]
+    domains: [Zenith.Accounts, Zenith.School]
 
   import_types Absinthe.Plug.Types
 

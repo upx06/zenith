@@ -53,7 +53,7 @@ config :spark,
 config :zenith,
   ecto_repos: [Zenith.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Zenith.Accounts]
+  ash_domains: [Zenith.Accounts, Zenith.School]
 
 # Configures the endpoint
 config :zenith, ZenithWeb.Endpoint,
