@@ -15,5 +15,6 @@ defmodule Zenith.School do
     resource Zenith.School.Class
     resource Zenith.School.Language
     resource Zenith.School.Enrollment
+    resource Zenith.School.Grade
   end
 end
