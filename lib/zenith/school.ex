@@ -11,5 +11,6 @@ defmodule Zenith.School do
 
   resources do
     resource Zenith.School.Teacher
+    resource Zenith.School.Student
   end
 end
