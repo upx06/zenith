@@ -56,4 +56,8 @@ defmodule Zenith.School.Teacher do
       end
     end
   end
+
+  relationships do
+    has_many :lessons, Zenith.School.Lesson, public?: true
+  end
 end
