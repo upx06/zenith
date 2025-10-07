@@ -18,5 +18,6 @@ defmodule Zenith.School do
     resource Zenith.School.Grade
     resource Zenith.School.Classroom
     resource Zenith.School.Lesson
+    resource Zenith.School.Frequency
   end
 end
