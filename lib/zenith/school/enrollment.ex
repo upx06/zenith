@@ -15,9 +15,9 @@ defmodule Zenith.School.Enrollment do
 
     queries do
       get :get_enrollment, :read
-      list :list_enrollment, :read_paginated
-      list :list_no_class_enrollment, :list_no_class_enrollment
-      list :list_class_enrollment, :list_class_enrollment
+      list :list_enrollments, :read_paginated
+      list :list_no_class_enrollments, :list_no_class_enrollments
+      list :list_class_enrollments, :list_class_enrollments
     end
 
     mutations do
@@ -55,12 +55,12 @@ defmodule Zenith.School.Enrollment do
       end
     end
 
-    read :list_class_enrollment do
+    read :list_class_enrollments do
       argument :class_id, :uuid, allow_nil?: false
       filter expr(class_id == ^arg(:class_id))
     end
 
-    read :list_no_class_enrollment do
+    read :list_no_class_enrollments do
       filter expr(is_nil(class_id))
     end
   end

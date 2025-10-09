@@ -15,7 +15,7 @@ defmodule Zenith.School.Grade do
 
     queries do
       get :get_grade, :read
-      list :list_grade, :read_paginated
+      list :list_grades, :read_paginated
     end
 
     mutations do

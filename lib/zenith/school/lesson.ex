@@ -15,7 +15,7 @@ defmodule Zenith.School.Lesson do
 
     queries do
       get :get_lesson, :read
-      list :list_lesson, :read_paginated
+      list :list_lessons, :read_paginated
     end
 
     mutations do

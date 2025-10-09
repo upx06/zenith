@@ -15,7 +15,7 @@ defmodule Zenith.School.Language do
 
     queries do
       get :get_language, :read
-      list :list_language, :read_paginated
+      list :list_languages, :read_paginated
     end
 
     mutations do

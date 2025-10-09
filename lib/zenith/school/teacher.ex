@@ -15,7 +15,7 @@ defmodule Zenith.School.Teacher do
 
     queries do
       get :get_teacher, :read
-      list :list_teacher, :read_paginated
+      list :list_teachers, :read_paginated
     end
 
     mutations do

@@ -15,7 +15,7 @@ defmodule Zenith.School.Frequency do
 
     queries do
       get :get_frequency, :read
-      list :list_frequency, :read_paginated
+      list :list_frequencies, :read_paginated
     end
 
     mutations do
