@@ -65,5 +65,7 @@ defmodule Zenith.School.Class do
       public? true
       allow_nil? false
     end
+
+    has_many :enrollments, Zenith.School.Enrollment, public?: true
   end
 end
