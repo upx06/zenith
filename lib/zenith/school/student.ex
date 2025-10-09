@@ -3,6 +3,7 @@ defmodule Zenith.School.Student do
   otp_app: :nexus,
   domain: Zenith.School,
   data_layer: AshPostgres.DataLayer,
+  authorizers: [Ash.Policy.Authorizer],
   extensions: [AshGraphql.Resource]
 
   @moduledoc """
@@ -39,8 +40,15 @@ defmodule Zenith.School.Student do
     # update_timestamp :updated_at, public?: true
   end
 
+  policies do
+    policy always() do
+      authorize_if always()
+    end
+  end
+
   actions do
-    defaults [:read, :destroy, create: :*, update: :*]
+    defaults [:read, :destroy, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -50,9 +58,18 @@ defmodule Zenith.School.Student do
         max_page_size 10
       end
     end
+
+    create :create do
+      accept [:*]
+
+      argument :enrollments, :map, allow_nil?: false
+
+      change manage_relationship(:enrollments, :enrollment, type: :create)
+    end
   end
 
   relationships do
     # belongs_to :user, Zenith.School.ResourceNameFather, public?: true
+    has_many :enrollment, Zenith.School.Enrollment, public?: true
   end
 end

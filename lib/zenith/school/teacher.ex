@@ -40,7 +40,7 @@ defmodule Zenith.School.Teacher do
 
   policies do
     policy always() do
-      authorize_if actor_present()
+      authorize_if always()
     end
   end
 

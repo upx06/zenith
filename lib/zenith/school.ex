@@ -9,6 +9,8 @@ defmodule Zenith.School do
     authorize? true
   end
 
+  # https://www.drawdb.app/editor?shareId=cf56ceac6b25b0aaff370f74fb39d193
+
   resources do
     resource Zenith.School.Teacher
     resource Zenith.School.Student

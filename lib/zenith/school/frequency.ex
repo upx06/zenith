@@ -3,6 +3,7 @@ defmodule Zenith.School.Frequency do
   otp_app: :nexus,
   domain: Zenith.School,
   data_layer: AshPostgres.DataLayer,
+  authorizers: [Ash.Policy.Authorizer],
   extensions: [AshGraphql.Resource]
 
   @moduledoc """
@@ -35,6 +36,12 @@ defmodule Zenith.School.Frequency do
 
     # create_timestamp :created_at, public?: true
     # update_timestamp :updated_at, public?: true
+  end
+
+  policies do
+    policy always() do
+      authorize_if always()
+    end
   end
 
   actions do
