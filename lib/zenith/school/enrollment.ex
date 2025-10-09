@@ -16,6 +16,8 @@ defmodule Zenith.School.Enrollment do
     queries do
       get :get_enrollment, :read
       list :list_enrollment, :read_paginated
+      list :list_no_class_enrollment, :list_no_class_enrollment
+      list :list_class_enrollment, :list_class_enrollment
     end
 
     mutations do
@@ -51,6 +53,15 @@ defmodule Zenith.School.Enrollment do
         countable true
         max_page_size 10
       end
+    end
+
+    read :list_class_enrollment do
+      argument :class_id, :uuid, allow_nil?: false
+      filter expr(class_id == ^arg(:class_id))
+    end
+
+    read :list_no_class_enrollment do
+      filter expr(is_nil(class_id))
     end
   end
 
