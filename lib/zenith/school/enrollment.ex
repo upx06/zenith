@@ -16,19 +16,25 @@ defmodule Zenith.School.Enrollment do
     queries do
       get :get_enrollment, :read
       list :list_enrollments, :read_paginated
-      list :list_no_class_enrollments, :list_no_class_enrollments
-      list :list_class_enrollments, :list_class_enrollments
+      list :list_specific_enrollments, :list_specific_enrollments
     end
 
     mutations do
       create :create_enrollment, :create
       update :update_enrollment, :update
+      destroy :destroy_enrollment, :destroy
     end
   end
 
   postgres do
     table "enrollments"
     repo Zenith.Repo
+
+    references do
+      reference :student,
+        on_delete: :delete,
+        name: "enrollments_student_id_fkey"
+    end
   end
 
   attributes do
@@ -55,13 +61,9 @@ defmodule Zenith.School.Enrollment do
       end
     end
 
-    read :list_class_enrollments do
+    read :list_specific_enrollments do
       argument :class_id, :uuid, allow_nil?: false
       filter expr(class_id == ^arg(:class_id))
-    end
-
-    read :list_no_class_enrollments do
-      filter expr(is_nil(class_id))
     end
   end
 

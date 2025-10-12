@@ -6,6 +6,8 @@ defmodule Zenith.School.Student do
   authorizers: [Ash.Policy.Authorizer],
   extensions: [AshGraphql.Resource]
 
+  require Ash.Query
+
   @moduledoc """
   Resource for Student.
   """
@@ -16,11 +18,13 @@ defmodule Zenith.School.Student do
     queries do
       get :get_student, :read
       list :list_students, :read_paginated
+      list :students_not_enrolled_in_class, :not_enrolled_in_class
     end
 
     mutations do
       create :create_student, :create
       update :update_student, :update
+      destroy :destroy_student, :destroy
     end
   end
 
@@ -47,7 +51,7 @@ defmodule Zenith.School.Student do
   end
 
   actions do
-    defaults [:read, :destroy, update: :*]
+    defaults [:read, create: :*, update: :*]
 
     read :read_paginated do
       pagination do
@@ -59,12 +63,31 @@ defmodule Zenith.School.Student do
       end
     end
 
-    create :create do
-      accept [:*]
+     read :not_enrolled_in_class do
+      argument :class_id, :uuid, allow_nil?: false
 
-      argument :enrollments, :map, allow_nil?: false
+      prepare fn query, _context ->
+        class_id = query.arguments.class_id
 
-      change manage_relationship(:enrollments, :enrollment, type: :create)
+        students = Zenith.School.Student
+        |> Ash.read!()
+        |> Ash.load!([:enrollment])
+
+        filtered_students = Enum.filter(students, fn student ->
+          not Enum.any?(student.enrollment, fn enroll ->
+            enroll.class_id == class_id
+          end)
+        end)
+
+        student_ids = Enum.map(filtered_students, fn student -> student.id end)
+
+        Ash.Query.filter(query, id in ^student_ids)
+      end
+    end
+
+    destroy :destroy do
+      primary? true
+      change cascade_destroy(:enrollment)
     end
   end
 
