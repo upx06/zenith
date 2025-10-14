@@ -1,10 +1,10 @@
 defmodule Zenith.School.Class do
   use Ash.Resource,
-  otp_app: :nexus,
-  domain: Zenith.School,
-  authorizers: [Ash.Policy.Authorizer],
-  data_layer: AshPostgres.DataLayer,
-  extensions: [AshGraphql.Resource]
+    otp_app: :nexus,
+    domain: Zenith.School,
+    authorizers: [Ash.Policy.Authorizer],
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   @moduledoc """
   Resource for Class.
@@ -29,20 +29,9 @@ defmodule Zenith.School.Class do
     repo Zenith.Repo
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-    attribute :name, :string, allow_nil?: false, public?: true
-    attribute :level, :atom do
-      allow_nil? false
-      public? true
-      constraints one_of: [:A1, :A2, :B1, :B2, :C1, :C2]
-    end
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
-  end
-
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -58,6 +47,20 @@ defmodule Zenith.School.Class do
     policy always() do
       authorize_if always()
     end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+    attribute :name, :string, allow_nil?: false, public?: true
+
+    attribute :level, :atom do
+      allow_nil? false
+      public? true
+      constraints one_of: [:A1, :A2, :B1, :B2, :C1, :C2]
+    end
+
+    # create_timestamp :created_at, public?: true
+    # update_timestamp :updated_at, public?: true
   end
 
   relationships do

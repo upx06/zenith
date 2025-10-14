@@ -20,4 +20,15 @@ defmodule Zenith.Generator do
       overrides: opts
     )
   end
+
+  def class(opts \\ []) do
+    seed_generator(
+      %Zenith.School.Class{
+        name: "Turma 01",
+        level: :A1,
+        language_id: generate(language()).id
+      },
+      overrides: opts
+    )
+  end
 end
