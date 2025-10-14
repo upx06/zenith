@@ -31,4 +31,14 @@ defmodule Zenith.Generator do
       overrides: opts
     )
   end
+
+  def classroom(opts \\ []) do
+    seed_generator(
+      %Zenith.School.Classroom{
+        name: "Sala 01",
+        capacity: 10
+      },
+      overrides: opts
+    )
+  end
 end
