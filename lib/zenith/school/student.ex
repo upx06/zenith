@@ -1,10 +1,10 @@
 defmodule Zenith.School.Student do
   use Ash.Resource,
-  otp_app: :nexus,
-  domain: Zenith.School,
-  data_layer: AshPostgres.DataLayer,
-  authorizers: [Ash.Policy.Authorizer],
-  extensions: [AshGraphql.Resource]
+    otp_app: :nexus,
+    domain: Zenith.School,
+    data_layer: AshPostgres.DataLayer,
+    authorizers: [Ash.Policy.Authorizer],
+    extensions: [AshGraphql.Resource]
 
   require Ash.Query
 
@@ -33,23 +33,6 @@ defmodule Zenith.School.Student do
     repo Zenith.Repo
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-
-    attribute :name, :string, public?: true, allow_nil?: false
-    attribute :email, :string, public?: true, allow_nil?: false
-    attribute :phone, :string, public?: true, allow_nil?: false
-
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
-  end
-
-  policies do
-    policy always() do
-      authorize_if always()
-    end
-  end
-
   actions do
     defaults [:read, create: :*, update: :*]
 
@@ -63,21 +46,23 @@ defmodule Zenith.School.Student do
       end
     end
 
-     read :not_enrolled_in_class do
+    read :not_enrolled_in_class do
       argument :class_id, :uuid, allow_nil?: false
 
       prepare fn query, _context ->
         class_id = query.arguments.class_id
 
-        students = Zenith.School.Student
-        |> Ash.read!()
-        |> Ash.load!([:enrollment])
+        students =
+          Zenith.School.Student
+          |> Ash.read!()
+          |> Ash.load!([:enrollment])
 
-        filtered_students = Enum.filter(students, fn student ->
-          not Enum.any?(student.enrollment, fn enroll ->
-            enroll.class_id == class_id
+        filtered_students =
+          Enum.filter(students, fn student ->
+            not Enum.any?(student.enrollment, fn enroll ->
+              enroll.class_id == class_id
+            end)
           end)
-        end)
 
         student_ids = Enum.map(filtered_students, fn student -> student.id end)
 
@@ -89,6 +74,23 @@ defmodule Zenith.School.Student do
       primary? true
       change cascade_destroy(:enrollment)
     end
+  end
+
+  policies do
+    policy always() do
+      authorize_if always()
+    end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+
+    attribute :name, :string, public?: true, allow_nil?: false
+    attribute :email, :string, public?: true, allow_nil?: false
+    attribute :phone, :string, public?: true, allow_nil?: false
+
+    # create_timestamp :created_at, public?: true
+    # update_timestamp :updated_at, public?: true
   end
 
   relationships do
