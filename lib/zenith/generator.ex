@@ -11,4 +11,13 @@ defmodule Zenith.Generator do
       overrides: opts
     )
   end
+
+  def language(opts \\ []) do
+    seed_generator(
+      %Zenith.School.Language{
+        name: "English"
+      },
+      overrides: opts
+    )
+  end
 end
