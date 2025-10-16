@@ -1,56 +1,77 @@
-# Build stage
-FROM hexpm/elixir:1.17.3-erlang-27.1.2-alpine-3.20.3 AS build
+# Find eligible builder and runner images on Docker Hub. We use Ubuntu/Debian
+# instead of Alpine to avoid DNS resolution issues in production.
+ARG ELIXIR_VERSION=1.17.3
+ARG OTP_VERSION=27.1.2
+ARG DEBIAN_VERSION=bookworm-20241016-slim
 
-# Instala dependências de build
-RUN apk add --no-cache build-base git nodejs npm
+ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
+ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 
+FROM ${BUILDER_IMAGE} as builder
+
+# install build dependencies
+RUN apt-get update -y && apt-get install -y build-essential git nodejs npm \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# prepare build dir
 WORKDIR /app
 
-# Instala Hex e Rebar
+# install hex + rebar
 RUN mix local.hex --force && \
-    mix local.rebar --force
+  mix local.rebar --force
 
-# Define ambiente de produção
-ENV MIX_ENV=prod
+# set build ENV
+ENV MIX_ENV="prod"
 
-# Copia arquivos de dependências
+# install mix dependencies
 COPY mix.exs mix.lock ./
-RUN mix deps.get --only prod
+RUN mix deps.get --only $MIX_ENV
+RUN mkdir -p config
+
+# copy compile-time config files before we compile dependencies
+COPY config/config.exs config/prod.exs config/
 RUN mix deps.compile
 
-# Copia configurações e código
-COPY config config
-COPY lib lib
+# Copy application code
 COPY priv priv
+COPY lib lib
 
-# Compila o projeto
+# Compile the release
 RUN mix compile
+
+# Changes to config/runtime.exs don't require recompiling the code
+COPY config/runtime.exs config/
 
 # Build release
 RUN mix release
 
-# Runtime stage
-FROM alpine:3.20.3
+# start a new build stage so that the final image will only contain
+# the compiled release and other runtime necessities
+FROM ${RUNNER_IMAGE}
 
-# Instala dependências runtime
-RUN apk add --no-cache libstdc++ openssl ncurses-libs libgcc
+RUN apt-get update -y && \
+  apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
-WORKDIR /app
+# Set the locale
+RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 
-# Copia a release do build stage
-COPY --from=build /app/_build/prod/rel/zenith ./
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
-# Cria usuário não-root
-RUN addgroup -g 1000 zenith && \
-    adduser -D -u 1000 -G zenith zenith && \
-    chown -R zenith:zenith /app
+WORKDIR "/app"
+RUN chown nobody /app
 
-USER zenith
+# set runner ENV
+ENV MIX_ENV="prod"
 
-ENV HOME=/app
-ENV MIX_ENV=prod
-ENV PORT=8080
+# Only copy the final release from the build stage
+COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/zenith ./
 
-EXPOSE 8080
+USER nobody
 
-CMD ["bin/zenith", "start"]
+ENV PORT=10000
+EXPOSE 10000
+
+CMD ["/app/bin/zenith", "start"]
