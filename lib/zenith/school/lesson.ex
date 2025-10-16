@@ -21,6 +21,7 @@ defmodule Zenith.School.Lesson do
     mutations do
       create :create_lesson, :create
       update :update_lesson, :update
+      destroy :destroy_lesson, :destroy
     end
   end
 
