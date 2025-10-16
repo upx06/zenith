@@ -35,3 +35,20 @@ zenith-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.fly/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
