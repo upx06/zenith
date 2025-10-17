@@ -56,9 +56,9 @@ RUN apt-get update -y && \
 # Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 WORKDIR "/app"
 RUN chown nobody /app
@@ -69,9 +69,19 @@ ENV MIX_ENV="prod"
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/zenith ./
 
-USER nobody
-
 ENV PORT=10000
 EXPOSE 10000
 
-CMD ["/app/bin/zenith", "start"]
+# Script para rodar migrations e iniciar a app
+COPY <<EOF /app/entrypoint.sh
+#!/bin/sh
+set -e
+/app/bin/zenith eval "Zenith.Release.migrate"
+exec /app/bin/zenith start
+EOF
+
+RUN chmod +x /app/entrypoint.sh && chown nobody:root /app/entrypoint.sh
+
+USER nobody
+
+ENTRYPOINT ["/app/entrypoint.sh"]

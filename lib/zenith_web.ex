@@ -17,7 +17,7 @@ defmodule ZenithWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt index.html logo.jpg android-chrome-192x192.png android-chrome-512x512.png site-BwHFeIBa.webmanifest)
 
   def router do
     quote do

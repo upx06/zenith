@@ -56,7 +56,7 @@ defmodule ZenithWeb.Router do
   scope "/", ZenithWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    # get "/", PageController, :home
     auth_routes AuthController, Zenith.Accounts.User, path: "/auth"
     sign_out_route AuthController
 

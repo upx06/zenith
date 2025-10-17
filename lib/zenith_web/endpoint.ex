@@ -29,13 +29,6 @@ defmodule ZenithWeb.Endpoint do
     gzip: not code_reloading?,
     only: ZenithWeb.static_paths()
 
-  plug Plug.Static,
-    at: "/",
-    from: :zenith,
-    gzip: false,
-    only: ~w(assets fonts images favicon.ico robots.txt index.html)
-
-
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
