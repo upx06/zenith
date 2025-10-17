@@ -36,9 +36,6 @@ defmodule ZenithWeb.Endpoint do
     only: ~w(assets fonts images favicon.ico robots.txt index.html)
 
 
-  plug :serve_react_app
-
-
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
@@ -73,15 +70,4 @@ defmodule ZenithWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug ZenithWeb.Router
-
-  defp serve_react_app(conn, _opts) do
-    if not String.starts_with?(conn.request_path, ["/api", "/ws", "/gql"]) do
-      conn
-      |> put_resp_header("content-type", "text/html; charset=utf-8")
-      |> Plug.Conn.send_file(200, Application.app_dir(:zenith, "priv/static/index.html"))
-      |> halt()
-    else
-      conn
-    end
-  end
 end

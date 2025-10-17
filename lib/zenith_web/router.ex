@@ -86,6 +86,13 @@ defmodule ZenithWeb.Router do
     )
   end
 
+  scope "/", ZenithWeb do
+    pipe_through :browser
+
+    get "/*path", PageController, :react_app
+  end
+
+
   # Other scopes may use custom stacks.
   # scope "/api", ZenithWeb do
   #   pipe_through :api
