@@ -89,6 +89,8 @@ defmodule Zenith.School.Student do
     attribute :email, :string, public?: true, allow_nil?: false
     attribute :phone, :string, public?: true, allow_nil?: false
 
+    attribute :photo_hash, :string, public?: true, allow_nil?: true
+
     # create_timestamp :created_at, public?: true
     # update_timestamp :updated_at, public?: true
   end

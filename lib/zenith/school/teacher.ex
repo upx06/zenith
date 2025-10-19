@@ -35,6 +35,9 @@ defmodule Zenith.School.Teacher do
     attribute :name, :string, allow_nil?: false, public?: true
     attribute :email, :string, allow_nil?: false, public?: true
     attribute :phone, :string, allow_nil?: false, public?: true
+
+    attribute :photo_hash, :string, allow_nil?: true, public?: true
+
     # create_timestamp :created_at, public?: true
     # update_timestamp :updated_at, public?: true
   end

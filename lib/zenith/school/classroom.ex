@@ -57,4 +57,8 @@ defmodule Zenith.School.Classroom do
     # create_timestamp :created_at, public?: true
     # update_timestamp :updated_at, public?: true
   end
+
+  relationships do
+    has_many :lesson, Zenith.School.Lesson, public?: true
+  end
 end
