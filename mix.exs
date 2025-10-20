@@ -78,7 +78,11 @@ defmodule Zenith.MixProject do
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:corsica, "~> 2.0"},
-      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false}
+      {:mix_test_watch, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:aws, "~> 1.0.0"},
+      {:hackney, "~> 1.9"},
+      {:ex_aws, "~> 2.4"},
+      {:ex_aws_s3, "~> 2.4"}
     ]
   end
 
