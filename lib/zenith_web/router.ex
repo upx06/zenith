@@ -39,7 +39,7 @@ defmodule ZenithWeb.Router do
   scope "/", ZenithWeb do
     pipe_through :api
 
-    post "/profile-photo", UploadProfilePhotoController, :upload_profile_photo
+    post "/profile-photo", UploadFileS3, :upload_profile_photo
   end
 
   scope "/", ZenithWeb do
