@@ -32,12 +32,6 @@ RUN mkdir -p config
 COPY config/config.exs config/prod.exs config/
 RUN mix deps.compile
 
-# Copy assets and build them
-COPY assets assets
-COPY priv priv
-RUN cd assets && npm ci --prefer-offline --no-audit --progress=false --loglevel=error
-RUN mix assets.deploy
-
 # Copy application code
 COPY lib lib
 
