@@ -72,14 +72,8 @@ ENV PORT=4000
 EXPOSE 4000
 
 # Script para rodar migrations e iniciar a app
-COPY <<EOF /app/entrypoint.sh
-#!/bin/sh
-set -e
-/app/bin/zenith eval "Zenith.Release.migrate"
-exec /app/bin/zenith start
-EOF
-
-RUN chmod +x /app/entrypoint.sh && chown nobody:root /app/entrypoint.sh
+COPY --chown=nobody:root entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 USER nobody
 
