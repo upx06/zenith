@@ -36,9 +36,9 @@ defmodule Zenith.School.Class do
       pagination do
         required? false
         keyset? true
-        default_limit 10
+        default_limit 9
         countable true
-        max_page_size 10
+        max_page_size 9
       end
     end
   end
@@ -70,5 +70,6 @@ defmodule Zenith.School.Class do
     end
 
     has_many :enrollments, Zenith.School.Enrollment, public?: true
+    has_many :lessons, Zenith.School.Lesson, public?: true
   end
 end

@@ -54,9 +54,9 @@ defmodule Zenith.School.Teacher do
       pagination do
         required? false
         keyset? true
-        default_limit 10
+        default_limit 3
         countable true
-        max_page_size 10
+        max_page_size 3
       end
     end
   end
