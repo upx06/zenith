@@ -33,6 +33,7 @@ COPY config/config.exs config/prod.exs config/
 RUN mix deps.compile
 
 # Copy application code
+COPY priv priv
 COPY lib lib
 
 # Compile the release
