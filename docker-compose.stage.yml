@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: rejoy_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: rejoy_stage
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rejoy_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    restart: always
+    build: .
+    environment:
+      - MIX_ENV=prod
+
+      - DATABASE_URL=ecto://rejoy_user:${POSTGRES_PASSWORD}@postgres:5432/rejoy_stage
+      - DATABASE_PORT=5432
+
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=sa-east-1
+
+      - TOKEN_SIGNING_SECRET=${TOKEN_SIGNING_SECRET}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+
+      - PORT=4000
+      - PHX_HOST=${PHX_HOST}
+      - PHX_HOST_REDIRECT=${PHX_HOST_REDIRECT}
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    restart: always
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/front:/usr/share/nginx/html
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
