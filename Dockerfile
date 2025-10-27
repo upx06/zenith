@@ -32,8 +32,13 @@ RUN mkdir -p config
 COPY config/config.exs config/prod.exs config/
 RUN mix deps.compile
 
-# Copy application code
+# Copy assets and build them
+COPY assets assets
 COPY priv priv
+RUN cd assets && npm ci --prefer-offline --no-audit --progress=false --loglevel=error
+RUN mix assets.deploy
+
+# Copy application code
 COPY lib lib
 
 # Compile the release
@@ -69,8 +74,8 @@ ENV MIX_ENV="prod"
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/zenith ./
 
-ENV PORT=10000
-EXPOSE 10000
+ENV PORT=4000
+EXPOSE 4000
 
 # Script para rodar migrations e iniciar a app
 COPY <<EOF /app/entrypoint.sh
