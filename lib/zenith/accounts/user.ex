@@ -247,6 +247,15 @@ defmodule Zenith.Accounts.User do
     policy always() do
       authorize_if always()
     end
+
+    policy action(:register_with_password) do
+      authorize_if always()
+    end
+
+    policy action(:sign_in_with_password) do
+      # authorize_if always()
+      authorize_if expr(active == true)
+    end
   end
 
   attributes do
@@ -265,6 +274,12 @@ defmodule Zenith.Accounts.User do
     attribute :hashed_password, :string do
       allow_nil? false
       sensitive? true
+    end
+
+    attribute :active, :boolean do
+      allow_nil? false
+      public? true
+      default false
     end
   end
 
