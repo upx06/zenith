@@ -54,7 +54,7 @@ defmodule ZenithWeb.Endpoint do
   plug Corsica,
     origins: [
       "http://localhost:5173",
-      "http://18.230.153.132:5173"
+      "http://18.230.153.132"
     ],
     allow_headers: ["accept", "content-type", "authorization"],
     allow_credentials: true,
