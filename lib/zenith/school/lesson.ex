@@ -28,6 +28,13 @@ defmodule Zenith.School.Lesson do
   postgres do
     table "lessons"
     repo Zenith.Repo
+
+
+    references do
+      reference :classroom,
+        on_delete: :delete,
+        name: "lessons_classroom_id_fkey"
+    end
   end
 
   attributes do

@@ -31,7 +31,7 @@ defmodule Zenith.School.Classroom do
   end
 
   actions do
-    defaults [:read, :destroy, create: :*, update: :*]
+    defaults [:read, create: :*, update: :*]
 
     read :read_paginated do
       pagination do
@@ -41,6 +41,12 @@ defmodule Zenith.School.Classroom do
         countable true
         max_page_size 9
       end
+    end
+
+
+    destroy :destroy do
+      primary? true
+      change cascade_destroy(:lesson)
     end
   end
 
