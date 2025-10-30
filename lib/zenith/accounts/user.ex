@@ -160,7 +160,7 @@ defmodule Zenith.Accounts.User do
       description "Looks up a user by their email"
       get? true
 
-      argument :email, :string do
+      argument :email, :ci_string do
         allow_nil? false
       end
 
