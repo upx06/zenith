@@ -40,6 +40,7 @@ defmodule Zenith.School.Lesson do
   attributes do
     uuid_v7_primary_key :id
     attribute :datetime, :utc_datetime, allow_nil?: false, public?: true
+    attribute :attendance_taken, :boolean, allow_nil?: false, default: false, public?: true
     # create_timestamp :created_at, public?: true
     # update_timestamp :updated_at, public?: true
   end
