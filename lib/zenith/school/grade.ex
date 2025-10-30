@@ -1,10 +1,10 @@
 defmodule Zenith.School.Grade do
   use Ash.Resource,
-  otp_app: :nexus,
-  domain: Zenith.School,
-  authorizers: [Ash.Policy.Authorizer],
-  data_layer: AshPostgres.DataLayer,
-  extensions: [AshGraphql.Resource]
+    otp_app: :nexus,
+    domain: Zenith.School,
+    authorizers: [Ash.Policy.Authorizer],
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   @moduledoc """
   Resource for Grade.
@@ -29,20 +29,9 @@ defmodule Zenith.School.Grade do
     repo Zenith.Repo
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
-  end
-
-  policies do
-    policy always() do
-      authorize_if always()
-    end
-  end
-
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -52,6 +41,23 @@ defmodule Zenith.School.Grade do
         max_page_size 10
       end
     end
+  end
+
+  policies do
+    policy always() do
+      authorize_if always()
+    end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+    # create_timestamp :created_at, public?: true
+    # update_timestamp :updated_at, public?: true
+  end
+
+  attributes do
+    attribute :score, :integer, allow_nil?: false, public?: true
+    attribute :comments, :string, allow_nil?: true, public?: true
   end
 
   relationships do
