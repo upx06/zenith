@@ -7,6 +7,20 @@ defmodule Zenith.Accounts.User do
     extensions: [AshAuthentication, AshGraphql.Resource],
     primary_read_warning?: false
 
+  graphql do
+    type :user
+
+    queries do
+      list :list_users, :read
+      read_one :get_user_by_email, :get_by_email
+      read_one :sign_in, :sign_in_with_password, type_name: :user_with_token
+    end
+
+    mutations do
+      create :create_user, :register_with_password
+    end
+  end
+
   authentication do
     add_ons do
       log_out_everywhere do
@@ -34,19 +48,6 @@ defmodule Zenith.Accounts.User do
           request_password_reset_action_name :request_password_reset_token
         end
       end
-    end
-  end
-
-  graphql do
-    type :user
-
-    queries do
-      list :list_users, :read
-      read_one :sign_in, :sign_in_with_password, type_name: :user_with_token
-    end
-
-    mutations do
-      create :create_user, :register_with_password
     end
   end
 
