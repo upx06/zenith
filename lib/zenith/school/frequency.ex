@@ -27,6 +27,12 @@ defmodule Zenith.School.Frequency do
   postgres do
     table "frequencies"
     repo Zenith.Repo
+
+    references do
+      reference :lesson,
+        on_delete: :delete,
+        name: "frequencies_lesson_id_fkey"
+    end
   end
 
   attributes do
