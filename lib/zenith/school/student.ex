@@ -88,6 +88,7 @@ defmodule Zenith.School.Student do
     attribute :name, :string, public?: true, allow_nil?: false
     attribute :email, :string, public?: true, allow_nil?: false
     attribute :phone, :string, public?: true, allow_nil?: false
+    attribute :goal, :string, public?: true, allow_nil?: true
 
     attribute :photo_key, :string, public?: true, allow_nil?: true
 

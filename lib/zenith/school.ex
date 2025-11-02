@@ -21,5 +21,9 @@ defmodule Zenith.School do
     resource Zenith.School.Classroom
     resource Zenith.School.Lesson
     resource Zenith.School.Frequency
+    resource Zenith.School.Exam
+    resource Zenith.School.Topic
+    resource Zenith.School.Result
+    resource Zenith.School.Score
   end
 end
