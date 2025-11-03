@@ -53,5 +53,6 @@ defmodule Zenith.School.Result do
 
   relationships do
     belongs_to :exam, Zenith.School.Exam, public?: true, allow_nil?: false
+    has_many :score, Zenith.School.Score, public?: true
   end
 end
