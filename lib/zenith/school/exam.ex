@@ -20,6 +20,7 @@ defmodule Zenith.School.Exam do
     mutations do
       create :create_exam, :create
       update :update_exam, :update
+      update :update_results, :update_results
       destroy :destroy_exam, :destroy
     end
   end
@@ -52,6 +53,16 @@ defmodule Zenith.School.Exam do
       accept [:*]
       argument :topics, {:array, :map}, allow_nil?: false
       change manage_relationship(:topics, type: :create)
+    end
+
+    update :update_results do
+      require_atomic? false
+      accept [:*]
+      argument :results, {:array, :map}, allow_nil?: false
+      change manage_relationship(:results,
+        on_no_match: {:create, :create},
+        use_identities: [:result_identity]
+      )
     end
   end
 

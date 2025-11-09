@@ -40,7 +40,21 @@ defmodule Zenith.School.Score do
   end
 
   actions do
-    defaults [:read, :destroy, create: :*, update: :*]
+    defaults [:read, :destroy]
+
+    create :create do
+      accept [:*]
+      upsert? true
+      upsert_identity :score_identity
+      upsert_fields [:score, :feedback, :updated_at]
+    end
+
+    update :update do
+      primary? true
+      require_atomic? false
+      accept [:*]
+    end
+
     read :read_paginated do
       pagination do
         required? false
@@ -55,5 +69,9 @@ defmodule Zenith.School.Score do
   relationships do
     belongs_to :result, Zenith.School.Result, public?: true, allow_nil?: false
     belongs_to :topic, Zenith.School.Topic, public?: true, allow_nil?: false
+  end
+
+  identities do
+    identity :score_identity, [:result_id, :topic_id]
   end
 end

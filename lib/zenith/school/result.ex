@@ -39,7 +39,7 @@ defmodule Zenith.School.Result do
   end
 
   actions do
-    defaults [:read, :destroy, create: :*, update: :*]
+    defaults [:read, :destroy]
     read :read_paginated do
       pagination do
         required? false
@@ -49,10 +49,41 @@ defmodule Zenith.School.Result do
         max_page_size 10
       end
     end
+
+    create :create do
+      accept [:*]
+      upsert? true
+      upsert_identity :result_identity
+      upsert_fields [:total_score, :updated_at]
+
+      argument :scores, {:array, :map}, allow_nil?: true
+      change manage_relationship(:scores,
+        on_no_match: {:create, :create},
+        on_match: :update,
+        use_identities: [:score_identity]
+      )
+    end
+
+    update :update do
+      require_atomic? false
+      accept [:*]
+
+      argument :scores, {:array, :map}, allow_nil?: true
+      change manage_relationship(:scores,
+        on_no_match: {:create, :create},
+        on_match: :update,
+        use_identities: [:score_identity]
+      )
+    end
   end
 
   relationships do
     belongs_to :exam, Zenith.School.Exam, public?: true, allow_nil?: false
-    has_many :score, Zenith.School.Score, public?: true
+    belongs_to :enrollment, Zenith.School.Enrollment, public?: true, allow_nil?: false
+    has_many :scores, Zenith.School.Score, public?: true
+  end
+
+  identities do
+    identity :result_identity, [:exam_id, :enrollment_id]
   end
 end
