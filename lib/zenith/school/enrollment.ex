@@ -70,5 +70,7 @@ defmodule Zenith.School.Enrollment do
   relationships do
     belongs_to :student, Zenith.School.Student, allow_nil?: false, public?: true
     belongs_to :class, Zenith.School.Class, allow_nil?: true, public?: true
+
+    has_many :scores, Zenith.School.Score, public?: true
   end
 end
