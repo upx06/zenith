@@ -92,8 +92,8 @@ defmodule Zenith.School.Student do
 
     attribute :photo_key, :string, public?: true, allow_nil?: true
 
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

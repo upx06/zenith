@@ -43,7 +43,6 @@ defmodule Zenith.School.Classroom do
       end
     end
 
-
     destroy :destroy do
       primary? true
       change cascade_destroy(:lesson)
@@ -60,8 +59,8 @@ defmodule Zenith.School.Classroom do
     uuid_v7_primary_key :id
     attribute :name, :string, allow_nil?: false, public?: true
     attribute :capacity, :integer, allow_nil?: false, public?: true
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

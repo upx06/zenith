@@ -30,15 +30,9 @@ defmodule Zenith.School.Exam do
     repo Zenith.Repo
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-    attribute :name, :string, public?: true
-    create_timestamp :created_at, public?: true
-    update_timestamp :updated_at, public?: true
-  end
-
   actions do
     defaults [:read, :destroy, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -59,11 +53,20 @@ defmodule Zenith.School.Exam do
       require_atomic? false
       accept [:*]
       argument :results, {:array, :map}, allow_nil?: false
+
       change manage_relationship(:results,
-        on_no_match: {:create, :create},
-        use_identities: [:result_identity]
-      )
+               on_no_match: {:create, :create},
+               use_identities: [:result_identity]
+             )
     end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+    attribute :name, :string, public?: true
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

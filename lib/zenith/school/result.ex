@@ -29,17 +29,9 @@ defmodule Zenith.School.Result do
     repo Zenith.Repo
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-
-    attribute :total_score, :integer, public?: true
-
-    create_timestamp :created_at, public?: true
-    update_timestamp :updated_at, public?: true
-  end
-
   actions do
     defaults [:read, :destroy]
+
     read :read_paginated do
       pagination do
         required? false
@@ -57,11 +49,12 @@ defmodule Zenith.School.Result do
       upsert_fields [:total_score, :updated_at]
 
       argument :scores, {:array, :map}, allow_nil?: true
+
       change manage_relationship(:scores,
-        on_no_match: {:create, :create},
-        on_match: :update,
-        use_identities: [:score_identity]
-      )
+               on_no_match: {:create, :create},
+               on_match: :update,
+               use_identities: [:score_identity]
+             )
     end
 
     update :update do
@@ -69,12 +62,22 @@ defmodule Zenith.School.Result do
       accept [:*]
 
       argument :scores, {:array, :map}, allow_nil?: true
+
       change manage_relationship(:scores,
-        on_no_match: {:create, :create},
-        on_match: :update,
-        use_identities: [:score_identity]
-      )
+               on_no_match: {:create, :create},
+               on_match: :update,
+               use_identities: [:score_identity]
+             )
     end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+
+    attribute :total_score, :integer, public?: true
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

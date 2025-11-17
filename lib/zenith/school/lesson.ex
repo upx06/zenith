@@ -1,10 +1,10 @@
 defmodule Zenith.School.Lesson do
   use Ash.Resource,
-  otp_app: :nexus,
-  domain: Zenith.School,
-  authorizers: [Ash.Policy.Authorizer],
-  data_layer: AshPostgres.DataLayer,
-  extensions: [AshGraphql.Resource]
+    otp_app: :nexus,
+    domain: Zenith.School,
+    authorizers: [Ash.Policy.Authorizer],
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   @moduledoc """
   Resource for Lesson.
@@ -29,7 +29,6 @@ defmodule Zenith.School.Lesson do
     table "lessons"
     repo Zenith.Repo
 
-
     references do
       reference :classroom,
         on_delete: :delete,
@@ -37,22 +36,9 @@ defmodule Zenith.School.Lesson do
     end
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-    attribute :datetime, :utc_datetime, allow_nil?: false, public?: true
-    attribute :attendance_taken, :boolean, allow_nil?: false, default: false, public?: true
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
-  end
-
-  policies do
-    policy always() do
-      authorize_if always()
-    end
-  end
-
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -62,6 +48,21 @@ defmodule Zenith.School.Lesson do
         max_page_size 10
       end
     end
+  end
+
+  policies do
+    policy always() do
+      authorize_if always()
+    end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+    attribute :datetime, :utc_datetime, allow_nil?: false, public?: true
+    attribute :attendance_taken, :boolean, allow_nil?: false, default: false, public?: true
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

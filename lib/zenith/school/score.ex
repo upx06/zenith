@@ -29,16 +29,6 @@ defmodule Zenith.School.Score do
     repo Zenith.Repo
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-
-    attribute :score, :integer, public?: true
-    attribute :feedback, :string, public?: true
-
-    create_timestamp :created_at, public?: true
-    update_timestamp :updated_at, public?: true
-  end
-
   actions do
     defaults [:read, :destroy]
 
@@ -64,6 +54,16 @@ defmodule Zenith.School.Score do
         max_page_size 10
       end
     end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+
+    attribute :score, :integer, public?: true
+    attribute :feedback, :string, public?: true
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

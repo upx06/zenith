@@ -1,10 +1,10 @@
 defmodule Zenith.School.Enrollment do
   use Ash.Resource,
-  otp_app: :nexus,
-  domain: Zenith.School,
-  authorizers: [Ash.Policy.Authorizer],
-  data_layer: AshPostgres.DataLayer,
-  extensions: [AshGraphql.Resource]
+    otp_app: :nexus,
+    domain: Zenith.School,
+    authorizers: [Ash.Policy.Authorizer],
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshGraphql.Resource]
 
   @moduledoc """
   Resource for Enrollment.
@@ -37,20 +37,9 @@ defmodule Zenith.School.Enrollment do
     end
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
-  end
-
-  policies do
-    policy always() do
-      authorize_if always()
-    end
-  end
-
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -65,6 +54,19 @@ defmodule Zenith.School.Enrollment do
       argument :class_id, :uuid, allow_nil?: false
       filter expr(class_id == ^arg(:class_id))
     end
+  end
+
+  policies do
+    policy always() do
+      authorize_if always()
+    end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

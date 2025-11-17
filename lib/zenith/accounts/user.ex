@@ -282,6 +282,9 @@ defmodule Zenith.Accounts.User do
       public? true
       default false
     end
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   identities do

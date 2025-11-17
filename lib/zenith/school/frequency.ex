@@ -1,10 +1,10 @@
 defmodule Zenith.School.Frequency do
   use Ash.Resource,
-  otp_app: :nexus,
-  domain: Zenith.School,
-  data_layer: AshPostgres.DataLayer,
-  authorizers: [Ash.Policy.Authorizer],
-  extensions: [AshGraphql.Resource]
+    otp_app: :nexus,
+    domain: Zenith.School,
+    data_layer: AshPostgres.DataLayer,
+    authorizers: [Ash.Policy.Authorizer],
+    extensions: [AshGraphql.Resource]
 
   @moduledoc """
   Resource for Frequency.
@@ -35,23 +35,9 @@ defmodule Zenith.School.Frequency do
     end
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-
-    attribute :attendance, :boolean, public?: true, allow_nil?: false
-
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
-  end
-
-  policies do
-    policy always() do
-      authorize_if always()
-    end
-  end
-
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -61,6 +47,21 @@ defmodule Zenith.School.Frequency do
         max_page_size 10
       end
     end
+  end
+
+  policies do
+    policy always() do
+      authorize_if always()
+    end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+
+    attribute :attendance, :boolean, public?: true, allow_nil?: false
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

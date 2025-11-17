@@ -51,8 +51,9 @@ defmodule Zenith.School.Grade do
 
   attributes do
     uuid_v7_primary_key :id
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   attributes do

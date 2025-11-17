@@ -59,8 +59,8 @@ defmodule Zenith.School.Class do
       constraints one_of: [:A1, :A2, :B1, :B2, :C1, :C2]
     end
 
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

@@ -29,17 +29,9 @@ defmodule Zenith.School.Topic do
     repo Zenith.Repo
   end
 
-  attributes do
-    uuid_v7_primary_key :id
-
-    attribute :name, :string, public?: true
-
-    create_timestamp :created_at, public?: true
-    update_timestamp :updated_at, public?: true
-  end
-
   actions do
     defaults [:read, :destroy, create: :*, update: :*]
+
     read :read_paginated do
       pagination do
         required? false
@@ -49,6 +41,15 @@ defmodule Zenith.School.Topic do
         max_page_size 10
       end
     end
+  end
+
+  attributes do
+    uuid_v7_primary_key :id
+
+    attribute :name, :string, public?: true
+
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do

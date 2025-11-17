@@ -55,8 +55,8 @@ defmodule Zenith.School.Language do
     attribute :name, :string, public?: true, allow_nil?: false
     attribute :description, :string, public?: true, allow_nil?: true
 
-    # create_timestamp :created_at, public?: true
-    # update_timestamp :updated_at, public?: true
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 
   relationships do
