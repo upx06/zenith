@@ -72,5 +72,6 @@ defmodule Zenith.School.Enrollment do
     belongs_to :class, Zenith.School.Class, allow_nil?: true, public?: true
 
     has_many :scores, Zenith.School.Score, public?: true
+    has_many :frequencies, Zenith.School.Frequency, public?: true
   end
 end
