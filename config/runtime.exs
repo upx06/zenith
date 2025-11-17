@@ -78,6 +78,17 @@ if config_env() == :prod do
     secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
     region: System.get_env("AWS_REGION")
 
+  config :chromic_pdf,
+    chrome_executable: "/usr/bin/chromium",
+    chrome_args: [
+      "--no-sandbox",
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--disable-software-rasterizer",
+      "--disable-extensions"
+    ],
+    discard_stderr: false
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key
