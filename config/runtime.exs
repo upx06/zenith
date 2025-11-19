@@ -79,7 +79,11 @@ if config_env() == :prod do
     region: System.get_env("AWS_REGION")
 
   config :chromic_pdf,
-    chrome_executable: "/snap/bin/chromium"
+    chrome_args: [
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu"
+    ]
 
   # ## SSL Support
   #
