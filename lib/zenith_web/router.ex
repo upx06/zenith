@@ -39,9 +39,12 @@ defmodule ZenithWeb.Router do
   scope "/", ZenithWeb do
     pipe_through :api
 
+    # Profile Photo S3
     get "/profile-photo", GetPresignedUrlS3, :get_profile_photo
-
     post "/profile-photo", UploadFileS3, :upload_profile_photo
+
+    # Reports
+    post "/reports/student/:student_id", ReportController, :generate_student_report
   end
 
   scope "/", ZenithWeb do

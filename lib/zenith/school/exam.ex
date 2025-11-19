@@ -20,7 +20,7 @@ defmodule Zenith.School.Exam do
     mutations do
       create :create_exam, :create
       update :update_exam, :update
-      update :update_results, :update_results
+      update :update_scores, :update_scores
       destroy :destroy_exam, :destroy
     end
   end
@@ -49,14 +49,14 @@ defmodule Zenith.School.Exam do
       change manage_relationship(:topics, type: :create)
     end
 
-    update :update_results do
-      require_atomic? false
+    update :update_scores do
       accept [:*]
-      argument :results, {:array, :map}, allow_nil?: false
+      require_atomic? false
+      argument :scores, {:array, :map}, allow_nil?: true
 
-      change manage_relationship(:results,
-               on_no_match: {:create, :create},
-               use_identities: [:result_identity]
+      change manage_relationship(:scores,
+               type: :direct_control,
+               use_identities: [:score_identity]
              )
     end
   end
@@ -73,7 +73,8 @@ defmodule Zenith.School.Exam do
     belongs_to :class, Zenith.School.Class, public?: true, allow_nil?: true
     belongs_to :enrollment, Zenith.School.Enrollment, public?: true, allow_nil?: true
     belongs_to :teacher, Zenith.School.Teacher, public?: true, allow_nil?: false
-    has_many :results, Zenith.School.Result, public?: true
+
     has_many :topics, Zenith.School.Topic, public?: true
+    has_many :scores, Zenith.School.Score, public?: true
   end
 end
