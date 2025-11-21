@@ -80,6 +80,7 @@ if config_env() == :prod do
 
   config :chromic_pdf,
     chrome_executable: "/usr/bin/chromium-browser",
+    discard_stderr: false,
     chrome_args: [
       "--no-sandbox",
       "--disable-dev-shm-usage",
