@@ -79,7 +79,7 @@ if config_env() == :prod do
     region: System.get_env("AWS_REGION")
 
   config :chromic_pdf,
-    chrome_executable: "/usr/bin/chromium",
+    chrome_executable: "/usr/bin/chromium-browser",
     chrome_args: [
       "--no-sandbox",
       "--disable-dev-shm-usage",
