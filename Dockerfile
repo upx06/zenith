@@ -51,6 +51,15 @@ FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
   apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  chromium \
+  chromium-driver \
+  fonts-liberation \
+  libnss3 \
+  libxss1 \
+  libasound2 \
+  libatk-bridge2.0-0 \
+  libgtk-3-0 \
+  libgbm1 \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
