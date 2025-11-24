@@ -127,9 +127,37 @@ defmodule Zenith.Reports.StudentReport do
 
     output_path = Path.join(tmp_dir, filename)
 
-    case :ok do
-      :ok -> {:ok, output_path}
-      _ -> {:error, "Error generating PDF"}
+    # Opções para o pdf_generator
+    options = [
+      page_size: "A4",
+      margin_top: "0",
+      margin_bottom: "0",
+      margin_left: "0",
+      margin_right: "0",
+      encoding: "UTF-8",
+      dpi: 300,
+      shell_params: [
+        "--enable-local-file-access",
+        "--javascript-delay", "1000",
+        "--no-stop-slow-scripts"
+      ]
+    ]
+
+    # Gerar PDF diretamente do HTML
+    case PdfGenerator.generate(html, options) do
+      {:ok, generated_path} ->
+        # Mover o arquivo gerado para o local desejado
+        final_path = if generated_path != output_path do
+          File.rename!(generated_path, output_path)
+          output_path
+        else
+          generated_path
+        end
+
+        {:ok, final_path}
+
+      {:error, reason} ->
+        {:error, "Error generating PDF: #{inspect(reason)}"}
     end
   end
 

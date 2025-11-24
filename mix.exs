@@ -82,7 +82,8 @@ defmodule Zenith.MixProject do
       {:aws, "~> 1.0.0"},
       {:hackney, "~> 1.9"},
       {:ex_aws, "~> 2.4"},
-      {:ex_aws_s3, "~> 2.4"}
+      {:ex_aws_s3, "~> 2.4"},
+      {:pdf_generator, "~> 0.6"}
     ]
   end
 
