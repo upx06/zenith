@@ -18,8 +18,7 @@ defmodule Zenith.Application do
       ZenithWeb.Endpoint,
       {AshAuthentication.Supervisor, [otp_app: :zenith]},
       {Absinthe.Subscription, ZenithWeb.Endpoint},
-      AshGraphql.Subscription.Batcher,
-      ChromicPDF
+      AshGraphql.Subscription.Batcher
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

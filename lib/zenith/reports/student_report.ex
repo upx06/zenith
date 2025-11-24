@@ -48,39 +48,44 @@ defmodule Zenith.Reports.StudentReport do
 
       # Calcular média geral
       total_scores = length(enrollment.scores)
-      average = if total_scores > 0 do
-        sum = Enum.sum(Enum.map(enrollment.scores, & &1.score))
-        Float.round(sum / total_scores, 1)
-      else
-        0
-      end
+
+      average =
+        if total_scores > 0 do
+          sum = Enum.sum(Enum.map(enrollment.scores, & &1.score))
+          Float.round(sum / total_scores, 1)
+        else
+          0
+        end
 
       # Calcular estatísticas de frequência
       total_lessons = length(enrollment.frequencies)
       attended_lessons = Enum.count(enrollment.frequencies, & &1.attendance)
-      attendance_rate = if total_lessons > 0 do
-        Float.round((attended_lessons / total_lessons) * 100, 1)
-      else
-        0
-      end
+
+      attendance_rate =
+        if total_lessons > 0 do
+          Float.round(attended_lessons / total_lessons * 100, 1)
+        else
+          0
+        end
 
       # Calcular aprovação/reprovação por nota
-      passing_scores = Enum.count(enrollment.scores, & &1.score >= 7)
-      failing_scores = Enum.count(enrollment.scores, & &1.score < 5)
+      passing_scores = Enum.count(enrollment.scores, &(&1.score >= 7))
+      failing_scores = Enum.count(enrollment.scores, &(&1.score < 5))
 
-      {:ok, %{
-        student: student,
-        class: enrollment.class,
-        enrollment: enrollment,
-        scores_by_exam: scores_by_exam,
-        total_scores: total_scores,
-        average: average,
-        total_lessons: total_lessons,
-        attended_lessons: attended_lessons,
-        attendance_rate: attendance_rate,
-        passing_scores: passing_scores,
-        failing_scores: failing_scores
-      }}
+      {:ok,
+       %{
+         student: student,
+         class: enrollment.class,
+         enrollment: enrollment,
+         scores_by_exam: scores_by_exam,
+         total_scores: total_scores,
+         average: average,
+         total_lessons: total_lessons,
+         attended_lessons: attended_lessons,
+         attendance_rate: attendance_rate,
+         passing_scores: passing_scores,
+         failing_scores: failing_scores
+       }}
     else
       {:error, :not_found}
     end
@@ -89,25 +94,27 @@ defmodule Zenith.Reports.StudentReport do
   defp render_html(data) do
     logo_url = get_logo_url()
 
-    html = EEx.eval_string(
-      template(),
-      assigns: [
-        student: data.student,
-        class: data.class,
-        enrollment: data.enrollment,
-        scores_by_exam: data.scores_by_exam,
-        total_scores: data.total_scores,
-        average: data.average,
-        total_lessons: data.total_lessons,
-        attended_lessons: data.attended_lessons,
-        attendance_rate: data.attendance_rate,
-        passing_scores: data.passing_scores,
-        failing_scores: data.failing_scores,
-        score_class: &score_class/1,
-        display_feedback: &display_feedback/1,
-        logo_url: logo_url
-      ]
-    )
+    html =
+      EEx.eval_string(
+        template(),
+        assigns: [
+          student: data.student,
+          class: data.class,
+          enrollment: data.enrollment,
+          scores_by_exam: data.scores_by_exam,
+          total_scores: data.total_scores,
+          average: data.average,
+          total_lessons: data.total_lessons,
+          attended_lessons: data.attended_lessons,
+          attendance_rate: data.attendance_rate,
+          passing_scores: data.passing_scores,
+          failing_scores: data.failing_scores,
+          score_class: &score_class/1,
+          display_feedback: &display_feedback/1,
+          logo_url: logo_url
+        ]
+      )
+
     {:ok, html}
   end
 
@@ -120,18 +127,7 @@ defmodule Zenith.Reports.StudentReport do
 
     output_path = Path.join(tmp_dir, filename)
 
-    case ChromicPDF.print_to_pdf(
-      {:html, html},
-      output: output_path,
-      print_to_pdf: %{
-        preferCSSPageSize: true,
-        printBackground: true,
-        marginTop: 0.4,
-        marginBottom: 0.4,
-        marginLeft: 0.4,
-        marginRight: 0.4
-      }
-    ) do
+    case :ok do
       :ok -> {:ok, output_path}
       _ -> {:error, "Error generating PDF"}
     end
@@ -795,10 +791,10 @@ defmodule Zenith.Reports.StudentReport do
     """
   end
 
-      # <div class="footer">
-      #   <div class="footer-title">ZENITH ENGLISH SCHOOL</div>
-      #   <p>Documento gerado automaticamente pelo Sistema Acadêmico Zenith</p>
-      #   <p>© <%= DateTime.utc_now().year %> Zenith English School. Todos os direitos reservados.</p>
-      #   <p>Este documento é confidencial e destina-se exclusivamente ao uso do aluno e seus responsáveis legais.</p>
-      # </div>
+  # <div class="footer">
+  #   <div class="footer-title">ZENITH ENGLISH SCHOOL</div>
+  #   <p>Documento gerado automaticamente pelo Sistema Acadêmico Zenith</p>
+  #   <p>© <%= DateTime.utc_now().year %> Zenith English School. Todos os direitos reservados.</p>
+  #   <p>Este documento é confidencial e destina-se exclusivamente ao uso do aluno e seus responsáveis legais.</p>
+  # </div>
 end
