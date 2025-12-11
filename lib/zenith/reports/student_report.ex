@@ -115,6 +115,8 @@ defmodule Zenith.Reports.StudentReport do
         ]
       )
 
+    IO.inspect(html, label: "html: ")
+
     {:ok, html}
   end
 
@@ -138,7 +140,8 @@ defmodule Zenith.Reports.StudentReport do
       dpi: 300,
       shell_params: [
         "--enable-local-file-access",
-        "--javascript-delay", "1000",
+        "--javascript-delay",
+        "1000",
         "--no-stop-slow-scripts"
       ]
     ]
@@ -147,12 +150,13 @@ defmodule Zenith.Reports.StudentReport do
     case PdfGenerator.generate(html, options) do
       {:ok, generated_path} ->
         # Mover o arquivo gerado para o local desejado
-        final_path = if generated_path != output_path do
-          File.rename!(generated_path, output_path)
-          output_path
-        else
-          generated_path
-        end
+        final_path =
+          if generated_path != output_path do
+            File.rename!(generated_path, output_path)
+            output_path
+          else
+            generated_path
+          end
 
         {:ok, final_path}
 
